@@ -128,13 +128,13 @@
                 {
                     data: [],
                     backgroundColor: [
-                        '#ffcd56',
-                        '#ff6384',
-                        '#36a2eb',
-                        '#fd6b19',
-                        '#2ECC71',
-                        '#8E44AD',
-                        '#5D6D7E'
+                 //       '#ffcd56',
+                 //       '#ff6384',
+                 //       '#36a2eb',
+                 //       '#fd6b19',
+                 //       '#2ECC71',
+                 //       '#8E44AD',
+               //         '#5D6D7E'
                     ],
                 }
             ],
@@ -143,18 +143,24 @@
             ]
         };
 
-//gets budget data from json file
+//gets budget 
 function getBudget() {
     axios.get('http://localhost:3000/budget')
     .then(function (res) {
-        console.log(res.data);
-        for (var i = 0; i < res.data.myBudget.length; i++) {
-            dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-            dataSource.labels[i] = res.data.myBudget[i].title;
-            }
+
+        dataSource.labels = res.data.map(item => item.title);
+        dataSource.datasets[0].data = res.data.map(item => item.budget);
+        dataSource.datasets[0].backgroundColor = res.data.map(item => item.Color);
+    
+    })
+    .then(function (){
         createChart();
         createChartTest();
     });
+
+    //    createChart();
+    //    createChartTest();
+    //});
 }
 
 //creates the first pie chart
@@ -165,6 +171,8 @@ function createChart() {
         data: dataSource
     });
 }
+
+
    
 //creates the second chart D3JS
 function createChartTest() {
@@ -203,10 +211,10 @@ function createChartTest() {
 
     var color = d3.scale.ordinal()
 	    .domain(dataSource.labels)
-	    .range(['#ffcd56',
+	    .range(['#fd6b19',
                 '#ff6384',
                 '#36a2eb',
-                '#fd6b19',
+                '#ffcd56',
                 '#2ECC71',
                 '#8E44AD',
                 '#5D6D7E']);
